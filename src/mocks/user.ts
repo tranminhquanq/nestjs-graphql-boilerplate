@@ -2,7 +2,7 @@ export const usersMock = [
   {
     id: 1,
     username: 'credentials',
-    email: 'credentails@gmail.com',
+    email: 'credentials@gmail.com',
     password: '123456',
   },
   {
