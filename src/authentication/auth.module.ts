@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { LoginStrategiesModule } from './strategies/login/login.module';
-import { RegisterStrategiesModule } from './strategies/register/register.module';
+import { LoginModule } from './strategies/login/login.module';
+import { RegisterModule } from './strategies/register/register.module';
 
 @Module({
   controllers: [AuthController],
-  imports: [LoginStrategiesModule, RegisterStrategiesModule],
+  imports: [LoginModule, RegisterModule],
   providers: [AuthService],
   exports: [AuthService],
 })

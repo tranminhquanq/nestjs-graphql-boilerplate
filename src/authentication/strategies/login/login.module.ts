@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UsersModule } from '@/models/user/users.module';
-import { LoginStrategiesService } from './login.service';
+import { LoginService } from './login.service';
 
 @Module({
   imports: [UsersModule],
-  providers: [LoginStrategiesService],
-  exports: [LoginStrategiesService],
+  providers: [LoginService],
+  exports: [LoginService],
 })
-export class LoginStrategiesModule {}
+export class LoginModule {}

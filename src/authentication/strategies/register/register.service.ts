@@ -4,7 +4,7 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { TUserResponse } from '@/authentication/interfaces/user.interface';
 
 @Injectable()
-export class RegisterStrategiesService {
+export class RegisterService {
   constructor(private readonly userService: UserService) {}
 
   private async credentials(req: Request) {

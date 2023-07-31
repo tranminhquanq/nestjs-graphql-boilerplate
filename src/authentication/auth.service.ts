@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { TLoginResponse } from '@/authentication/interfaces/auth.interface';
-import { LoginStrategiesService } from './strategies/login/login.service';
-import { RegisterStrategiesService } from './strategies/register/register.service';
+import { LoginService } from './strategies/login/login.service';
+import { RegisterService } from './strategies/register/register.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly loginService: LoginStrategiesService,
-    private readonly registerService: RegisterStrategiesService,
+    private readonly loginService: LoginService,
+    private readonly registerService: RegisterService,
   ) {}
 
   async login(req: Request, grant_type: string): Promise<TLoginResponse> {
