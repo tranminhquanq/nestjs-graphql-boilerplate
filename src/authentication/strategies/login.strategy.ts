@@ -1,5 +1,6 @@
+import { HttpStatus } from '@nestjs/common';
 import { TUserResponse } from '@/authentication/interfaces/user.interface';
-import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
+import { CustomException } from '@/common/exceptions/http-exception.filter';
 
 const user = {
   id: 1,
@@ -12,15 +13,17 @@ export default class LoginStrategies {
     return user;
   };
   static google = async (req: Request): Promise<TUserResponse> => {
-    throw new ForbiddenException(
+    throw new CustomException(
       'google login is not supported',
       'google_login_not_supported',
+      HttpStatus.NOT_IMPLEMENTED,
     );
   };
   static phone_number = async (req: Request): Promise<TUserResponse> => {
-    throw new ForbiddenException(
+    throw new CustomException(
       'phone number login is not supported',
       'phone_number_login_not_supported',
+      HttpStatus.NOT_IMPLEMENTED,
     );
   };
 }

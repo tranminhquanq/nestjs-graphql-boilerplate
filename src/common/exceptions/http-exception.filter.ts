@@ -8,11 +8,8 @@ interface ErrorResponse {
   status_code: number;
 }
 export class CustomException extends HttpException {
-  constructor(message: string, messageCode: string, statusCode: number) {
-    super(
-      { message, message_code: messageCode, status_code: statusCode },
-      statusCode,
-    );
+  constructor(message: string, message_code: string, status_code: number) {
+    super({ message, message_code, status_code }, status_code);
   }
 }
 @Catch(HttpException)
