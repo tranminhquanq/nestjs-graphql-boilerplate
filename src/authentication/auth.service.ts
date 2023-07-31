@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import LoginStrategies from './strategies/login.strategy';
 import { TLoginResponse } from '@/authentication/interfaces/auth.interface';
+import { AuthStrategiesService } from './strategies/auth-strategies.service';
 
 @Injectable()
 export class AuthService {
-  async login(grant_type: string): Promise<TLoginResponse> {
-    const loginStrategy = LoginStrategies[grant_type];
-    const user = await loginStrategy();
+  constructor(private readonly authStrategiesService: AuthStrategiesService) {}
+
+  async login(req: Request, grant_type: string): Promise<TLoginResponse> {
+    const loginStrategy = this.authStrategiesService.loginService(grant_type);
+    const user = await loginStrategy(req);
 
     return {
       user,
