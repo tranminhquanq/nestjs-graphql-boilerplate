@@ -3,31 +3,25 @@ import {
   Controller,
   HttpCode,
   Post,
-  Query,
   Req,
   HttpStatus,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { TLoginResponse } from './interfaces/auth.interface';
-import { AuthService } from './auth.service';
+import { AuthService, EService } from './auth.service';
 
 @Controller('api/v1/auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(
-    @Req() request: Request,
-    @Query('grant_type') grant_type: string,
-  ): Promise<TLoginResponse> {
-    return await this.authService.login(request, grant_type);
+  async login(@Req() request: Request): Promise<TLoginResponse> {
+    return await this.authService.authenticate(request, EService.Login);
   }
 
   @Post('register')
-  async register(
-    @Req() request: Request,
-    @Query('grant_type') grant_type: string,
-  ) {
-    return await this.authService.register(request, grant_type);
+  async register(@Req() request: Request) {
+    return await this.authService.authenticate(request, EService.Register);
   }
 
   @HttpCode(HttpStatus.OK)

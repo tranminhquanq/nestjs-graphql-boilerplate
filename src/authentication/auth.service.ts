@@ -1,7 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { get } from 'lodash';
+import { Request } from 'express';
 import { TLoginResponse } from '@/authentication/interfaces/auth.interface';
 import { LoginService } from './strategies/login/login.service';
 import { RegisterService } from './strategies/register/register.service';
+
+export enum EService {
+  Login = 'loginService',
+  Register = 'registerService',
+}
 
 @Injectable()
 export class AuthService {
@@ -10,21 +17,12 @@ export class AuthService {
     private readonly registerService: RegisterService,
   ) {}
 
-  async login(req: Request, grant_type: string): Promise<TLoginResponse> {
-    const loginStrategy = this.loginService.strategies(grant_type);
-    const user = await loginStrategy(req);
-
-    return {
-      user,
-      access_token: 'access_token',
-      refresh_token: 'refresh_token',
-      expires_in: 0,
-    };
-  }
-
-  async register(req: Request, grant_type: string) {
-    const registerStrategy = this.registerService.strategies(grant_type);
-    const user = await registerStrategy(req);
+  async authenticate(req: Request, service: EService): Promise<TLoginResponse> {
+    const grant_type = get(req.query, 'grant_type', '').toString();
+    const strategyService =
+      service === EService.Login ? this.loginService : this.registerService;
+    const handler = strategyService.getHandler(grant_type);
+    const user = await handler(req);
 
     return {
       user,
