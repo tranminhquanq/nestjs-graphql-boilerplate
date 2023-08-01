@@ -3,6 +3,10 @@ import { get } from 'lodash';
 import { Request } from 'express';
 import { LoginService } from './strategies/login/login.service';
 import { RegisterService } from './strategies/register/register.service';
+import {
+  IAuthenticateResponse,
+  TRefreshTokenResponse,
+} from '@/authentication/interfaces/auth.interface';
 
 export enum EService {
   Login = 'loginService',
@@ -16,7 +20,10 @@ export class AuthService {
     private readonly registerService: RegisterService,
   ) {}
 
-  async authenticate(req: Request, service: EService) {
+  async authenticate(
+    req: Request,
+    service: EService,
+  ): Promise<IAuthenticateResponse> {
     const grant_type = get(req.query, 'grant_type', '').toString();
     const strategiesService =
       service === EService.Login ? this.loginService : this.registerService;
@@ -31,9 +38,9 @@ export class AuthService {
     };
   }
 
-  async refreshToken(refresh_token: string) {
+  refreshToken(refresh_token: string): TRefreshTokenResponse {
     return {
-      access_token: 'access_token',
+      access_token: refresh_token,
       expires_in: 0,
     };
   }

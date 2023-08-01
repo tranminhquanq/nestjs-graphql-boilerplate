@@ -2,7 +2,7 @@ import { omit } from 'lodash';
 import { Request } from 'express';
 import { UserService } from '@/models/user/users.service';
 import { Injectable } from '@nestjs/common';
-import { TUserResponse } from '@/authentication/interfaces/user.interface';
+import { TUserResponse } from '@/authentication/interfaces/auth.interface';
 import { BaseAuthenticationService } from '@/authentication/base-authentication.service';
 
 @Injectable()
@@ -26,7 +26,7 @@ export class LoginService extends BaseAuthenticationService {
   private async phone_number(req: Request): Promise<TUserResponse> {
     console.log('phone_number', req.body);
     const user = await this.userService.findOne('phone_number@gmail.com');
-    console.log('user', user);
+
     return omit(user, ['password']);
   }
   getHandler(grant_type: string): (req: Request) => Promise<TUserResponse> {
