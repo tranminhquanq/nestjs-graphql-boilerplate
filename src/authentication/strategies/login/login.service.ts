@@ -1,4 +1,5 @@
 import { omit } from 'lodash';
+import { Request } from 'express';
 import { UserService } from '@/models/user/users.service';
 import { Injectable } from '@nestjs/common';
 import { TUserResponse } from '@/authentication/interfaces/user.interface';
@@ -28,7 +29,7 @@ export class LoginService extends BaseAuthenticationService {
     console.log('user', user);
     return omit(user, ['password']);
   }
-  getHandler(grant_type: string) {
+  getHandler(grant_type: string): (req: Request) => Promise<TUserResponse> {
     this.validateGrantType(grant_type);
     return this[grant_type].bind(this);
   }

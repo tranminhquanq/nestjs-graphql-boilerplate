@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { get } from 'lodash';
 import { Request } from 'express';
-import { TLoginResponse } from '@/authentication/interfaces/auth.interface';
 import { LoginService } from './strategies/login/login.service';
 import { RegisterService } from './strategies/register/register.service';
 
@@ -17,11 +16,11 @@ export class AuthService {
     private readonly registerService: RegisterService,
   ) {}
 
-  async authenticate(req: Request, service: EService): Promise<TLoginResponse> {
+  async authenticate(req: Request, service: EService) {
     const grant_type = get(req.query, 'grant_type', '').toString();
-    const strategyService =
+    const strategiesService =
       service === EService.Login ? this.loginService : this.registerService;
-    const handler = strategyService.getHandler(grant_type);
+    const handler = strategiesService.getHandler(grant_type);
     const user = await handler(req);
 
     return {
