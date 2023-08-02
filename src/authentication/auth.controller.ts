@@ -18,10 +18,7 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Request() req) {
-    const authRes = await this.authService.authenticate(
-      req,
-      EService.Login,
-    );
+    const authRes = await this.authService.authenticate(req, EService.Login);
     const { user, ...tokenObject } = authRes;
     return {
       data: user,
@@ -32,10 +29,7 @@ export class AuthController {
   @Public()
   @Post('register')
   async register(@Request() req) {
-    const authRes = await this.authService.authenticate(
-      req,
-      EService.Register,
-    );
+    const authRes = await this.authService.authenticate(req, EService.Register);
     const { user, ...tokenObject } = authRes;
     return {
       data: user,

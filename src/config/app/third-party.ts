@@ -9,8 +9,13 @@ import {
   ConfigService,
 } from '@nestjs/config';
 import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
-import { ALLOW_LIST, isDev, protocols, tokenLifeTime } from "@/common/constants";
-import { JwtModuleAsyncOptions } from "@nestjs/jwt";
+import {
+  ALLOW_LIST,
+  isDev,
+  protocols,
+  tokenLifeTime,
+} from '@/common/constants';
+import { JwtModuleAsyncOptions } from '@nestjs/jwt';
 
 export const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
