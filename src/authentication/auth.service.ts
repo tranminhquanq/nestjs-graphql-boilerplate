@@ -2,8 +2,8 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 import { get, omit } from 'lodash';
 import { Request } from 'express';
 import { JwtService } from '@nestjs/jwt';
-import { LoginService } from './strategies/login/login.service';
-import { RegisterService } from './strategies/register/register.service';
+import { LoginService } from '@/authentication/strategies/login/login.service';
+import { RegisterService } from '@/authentication/strategies/register/register.service';
 import {
   IAuthenticateResponse,
   TRefreshTokenResponse,
@@ -19,7 +19,7 @@ export enum EService {
 @Injectable()
 export class AuthService {
   constructor(
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
     private readonly loginService: LoginService,
     private readonly registerService: RegisterService,
   ) {}
@@ -52,10 +52,10 @@ export class AuthService {
 
   async refreshToken(refresh_token: string): Promise<TRefreshTokenResponse> {
     try {
-      const tokenDecoded = await this.jwtService.verifyAsync(refresh_token);
+      const tokenDecoded = this.jwtService.verify(refresh_token);
       const payload = omit(tokenDecoded, ['iat', 'exp']);
-      const access_token = await this.jwtService.signAsync(payload);
-      const expires_in = this.jwtService.decode(access_token)['exp'];
+      const access_token = this.jwtService.sign(payload);
+      const expires_in = get(this.jwtService.decode(access_token), 'exp');
       return {
         access_token,
         expires_in,

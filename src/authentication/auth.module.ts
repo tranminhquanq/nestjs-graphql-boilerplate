@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { LoginModule } from './strategies/login/login.module';
-import { RegisterModule } from './strategies/register/register.module';
+import { AuthService } from '@/authentication/auth.service';
+import { AuthController } from '@/authentication/auth.controller';
+import { LoginModule } from '@/authentication/strategies/login/login.module';
+import { RegisterModule } from '@/authentication/strategies/register/register.module';
 import { jwtAsyncConfigOptions } from '@/config/app/third-party';
 import { AuthGuard } from '@/common/guards/auth.guard';
 

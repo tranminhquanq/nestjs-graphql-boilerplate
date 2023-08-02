@@ -6,7 +6,7 @@ import {
   Request,
   HttpStatus,
 } from '@nestjs/common';
-import { AuthService, EService } from './auth.service';
+import { AuthService, EService } from '@/authentication/auth.service';
 import { CustomException } from '@/common/exceptions/http-exception.filter';
 import { Public } from '@/common/guards/auth.guard';
 

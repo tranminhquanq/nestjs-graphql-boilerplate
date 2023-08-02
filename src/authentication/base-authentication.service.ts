@@ -1,5 +1,8 @@
 import { CustomException } from '@/common/exceptions/http-exception.filter';
 import { HttpStatus, Injectable } from '@nestjs/common';
+import { compareSync, genSaltSync, hashSync } from 'bcrypt';
+import { IUser } from '@/models/user/interfaces/user.interface';
+import { omit } from 'lodash';
 
 @Injectable()
 export class BaseAuthenticationService {
@@ -24,5 +27,17 @@ export class BaseAuthenticationService {
         HttpStatus.BAD_REQUEST,
       );
     }
+  }
+
+  protected transformUserResponseSendToClient(user: IUser) {
+    return omit(user, ['password']);
+  }
+  protected comparePassword(password: string, hashedPassword: string): boolean {
+    return compareSync(password, hashedPassword);
+  }
+
+  protected hashPassword(password: string): string {
+    const salt = genSaltSync(10);
+    return hashSync(password, salt);
   }
 }

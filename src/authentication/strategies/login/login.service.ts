@@ -1,5 +1,5 @@
-import { omit } from 'lodash';
 import { Request } from 'express';
+import { get } from 'lodash';
 import { UserService } from '@/models/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { TUserResponse } from '@/authentication/interfaces/auth.interface';
@@ -11,23 +11,26 @@ export class LoginService extends BaseAuthenticationService {
     super();
   }
 
-  private async credentials(req: Request): Promise<TUserResponse> {
-    console.log('credentials', req.body);
+  private async credentials({ body }: Request) {
     const user = await this.userService.findOne('credentials@gmail.com');
-    return omit(user, ['password']);
+    const originalPassword: string = get(body, 'password', '');
+    const hashedPassword = get(user, 'password');
+    const isMatch = this.comparePassword(originalPassword, hashedPassword);
+    console.log('isMatch', isMatch);
+    return this.transformUserResponseSendToClient(user);
   }
 
-  private async google(req: Request): Promise<TUserResponse> {
-    console.log('google', req.body);
+  private async google({ body }: Request) {
+    console.log('google', body);
     const user = await this.userService.findOne('google@gmail.com');
-    return omit(user, ['password']);
+    return this.transformUserResponseSendToClient(user);
   }
 
-  private async phone_number(req: Request): Promise<TUserResponse> {
-    console.log('phone_number', req.body);
+  private async phone_number({ body }: Request) {
+    console.log('phone_number', body);
     const user = await this.userService.findOne('phone_number@gmail.com');
 
-    return omit(user, ['password']);
+    return this.transformUserResponseSendToClient(user);
   }
   getHandler(grant_type: string): (req: Request) => Promise<TUserResponse> {
     this.validateGrantType(grant_type);
