@@ -9,7 +9,8 @@ import {
   ConfigService,
 } from '@nestjs/config';
 import { ForbiddenException } from '@/common/exceptions/forbidden.exception';
-import { ALLOW_LIST, isDev, protocols } from '@/common/constants';
+import { ALLOW_LIST, isDev, protocols, tokenLifeTime } from "@/common/constants";
+import { JwtModuleAsyncOptions } from "@nestjs/jwt";
 
 export const corsConfig: CorsOptions = {
   origin: (origin, callback) => {
@@ -64,4 +65,16 @@ export const helmetConfigOptions: HelmetOptions = {
       frameSrc: [`'self'`, 'sandbox.embed.apollographql.com'],
     },
   },
+};
+
+export const jwtAsyncConfigOptions: JwtModuleAsyncOptions = {
+  imports: [ConfigModule],
+  inject: [ConfigService],
+  useFactory: (config: ConfigService) => ({
+    global: true,
+    secret: config.get('JWT_SECRET'),
+    signOptions: {
+      expiresIn: tokenLifeTime.access,
+    },
+  }),
 };

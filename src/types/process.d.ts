@@ -4,5 +4,7 @@ declare namespace NodeJS {
     // rate limit
     THROTTLE_TTL: number;
     THROTTLE_LIMIT: number;
+    // jwt
+    JWT_SECRET: string;
   }
 }
