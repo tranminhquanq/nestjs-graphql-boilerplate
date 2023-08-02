@@ -1,6 +1,6 @@
 import { omit } from 'lodash';
 import { Request } from 'express';
-import { UserService } from '@/models/user/users.service';
+import { UserService } from '@/models/user/user.service';
 import { Injectable } from '@nestjs/common';
 import { TUserResponse } from '@/authentication/interfaces/auth.interface';
 import { BaseAuthenticationService } from '@/authentication/base-authentication.service';

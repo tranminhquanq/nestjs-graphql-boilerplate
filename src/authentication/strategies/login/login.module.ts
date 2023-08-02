@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from '@/models/user/users.module';
+import { UserModule } from '@/models/user/user.module';
 import { LoginService } from './login.service';
 
 @Module({
-  imports: [UsersModule],
+  imports: [UserModule],
   providers: [LoginService],
   exports: [LoginService],
 })
